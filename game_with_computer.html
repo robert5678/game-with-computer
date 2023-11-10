@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>В кого більше число</title>
+    <style>
+        body {
+            background-image:url(https://catherineasquithgallery.com/uploads/posts/2021-02/1614454956_3-p-zadnii-fon-temnii-3.jpg);
+            background-size: cover;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        }
+        #game {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+        }
+        .player {
+            border: 1px solid #0f0;
+            padding: 20px;
+            width: 30%;
+            text-align: center;
+            background-color: #222;
+        }
+        h1, h2, p {
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+        }
+        #result {
+            margin-top: 50px;
+            text-align: center;
+        }
+        button {
+            display: block;
+            margin: 50px auto;
+            background-color: #222;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            text-shadow: 0 0 5px #0f0;
+        }
+        button:hover {
+            background-color: #0f0;
+            color: #000;
+            text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="game">
+        <div class="player">
+            <h2 id="userName"></h2>
+            <h1 id="userScore">0</h1>
+            <p id="userNumber"></p>
+        </div>
+        <div class="player">
+            <h2>Комп'ютер</h2>
+            <h1 id="computerScore">0</h1>
+            <p id="computerNumber"></p>
+        </div>
+    </div>
+    <div id="result"></div>
+    <button onclick="startGame()">Генерувати</button>
+
+    <script>
+        let userScore = 0;
+        let computerScore = 0;
+        do {
+            userName = prompt("Будь ласка, введіть своє ім'я");
+        } while (!userName || userName.trim() === '');
+        document.getElementById("userName").innerText = userName;
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function startGame() {
+            if(userScore < 3 && computerScore < 3) {
+                let roundScoreUser = 0;
+                let roundScoreComputer = 0;
+                for(let i = 0; i < 5; i++) {
+                    let userNumber = Math.floor(Math.random() * 10);
+                    let computerNumber = Math.floor(Math.random() * 10);
+
+                    document.getElementById("userNumber").innerText = "Число: " + userNumber;
+                    document.getElementById("computerNumber").innerText = "Число: " + computerNumber;
+
+                    if(userNumber > computerNumber) {
+                        roundScoreUser++;
+                    } else if(computerNumber > userNumber) {
+                        roundScoreComputer++;
+                    }
+
+                    await sleep(1000);
+                }
+
+                if(roundScoreUser > roundScoreComputer) {
+                    userScore++;
+                    document.getElementById("userScore").innerText = userScore;
+                    document.getElementById("result").innerText = userName + " виграє цей раунд. Рахунок: " + userScore;
+                } else if(roundScoreComputer > roundScoreUser) {
+                    computerScore++;
+                    document.getElementById("computerScore").innerText = computerScore;
+                    document.getElementById("result").innerText = "Комп'ютер виграє цей раунд. Рахунок: " + computerScore;
+                } else {
+                    document.getElementById("result").innerText = "Нічия. Бали не нараховуються.";
+                }
+
+                if(userScore == 3) {
+                    alert(userName + " виграв гру!");
+                } else if(computerScore == 3) {
+                    alert("Комп'ютер виграв гру!");
+                }
+            } else {
+                alert("Гра завершена. Натисніть F5, щоб почати нову гру.");
+            }
+        }
+    </script>
+</body>
+</html>
